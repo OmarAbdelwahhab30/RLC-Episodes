@@ -1,0 +1,23 @@
+{
+  "name": "vendor_name/rlc",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "user",
+      "email": "email@example.com"
+    }
+  ],
+  "require": {
+  },
+  "autoload": {
+    "psr-4": {
+      "RLC\\Framework\\": "framework/",
+      "App\\": "src/"
+    }
+  },
+  "require-dev": {
+    "symfony/var-dumper": "6.3.x-dev"
+  }
+}
