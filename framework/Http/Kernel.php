@@ -13,16 +13,13 @@ class Kernel
         // Loads the predefined routes.
         $dispatcher = simpleDispatcher(function (RouteCollector $r) {
 
-            $r->addRoute("GET", "/", function () {
-                $content = include ROOT . "/src/views/home.php";
-                return new \RLC\Framework\Http\Response($content, 200);
-            });
+            $routes = include ROOT."/routes/web.php";
 
-            $r->addRoute("GET","/post/{id:\d+}",function ($postID){
 
-                $postPage = "This post has id number : ".$postID['id'];
-                return new \RLC\Framework\Http\Response($postPage, 200);
-            });
+            foreach ($routes as $route){
+
+                $r->addRoute(...$route);
+            }
         });
 
 
@@ -32,9 +29,12 @@ class Kernel
             $request->server['REQUEST_URI']);
 
 
-        [$status , $handler, $vars] = $matchingInfo;
+        [$status ,[$controller,$method], $vars] = $matchingInfo;
 
         // Call the handler.
-        return $handler($vars);
+
+        return call_user_func_array([new $controller,$method],$vars);
+
+
     }
 }
