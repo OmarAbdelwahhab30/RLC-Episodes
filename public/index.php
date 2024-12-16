@@ -7,9 +7,10 @@ require_once dirname(__DIR__) . "/vendor/autoload.php";
 
 $request = \RLC\Framework\Http\Request::getGlobals();
 
+$router = new \RLC\Framework\Router\Router();
 
+$kernel = new \RLC\Framework\Http\Kernel($router);
 
-$kernel = new \RLC\Framework\Http\Kernel();
 $response = $kernel->handle($request);
 
 $response->send();
