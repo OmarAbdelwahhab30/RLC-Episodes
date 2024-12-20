@@ -7,6 +7,9 @@ use RLC\Framework\Http\Response;
 class HomeController
 {
 
+    public function __construct(PostsController $controller)
+    {
+    }
 
     public function index(){
 
