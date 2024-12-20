@@ -4,12 +4,11 @@
 define("ROOT", dirname(__DIR__));
 require_once dirname(__DIR__) . "/vendor/autoload.php";
 
+$container = require ROOT."/config/services.php";
 
 $request = \RLC\Framework\Http\Request::getGlobals();
 
-$router = new \RLC\Framework\Router\Router();
-
-$kernel = new \RLC\Framework\Http\Kernel($router);
+$kernel = $container->get(\RLC\Framework\Http\Kernel::class);
 
 $response = $kernel->handle($request);
 
