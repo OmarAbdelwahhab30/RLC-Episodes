@@ -17,9 +17,6 @@ class Kernel
 
     public function handle(Request $request)
     {
-        [$handler , $arguments] = $this->router->dispatch($request);
-
-        $controllerObj = $this->container->get($handler[0]);
-        return call_user_func_array([$controllerObj,$handler[1]],$arguments);
+        return $this->router->dispatch($request,$this->container);
     }
 }
