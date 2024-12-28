@@ -13,11 +13,11 @@ class DatabaseFactory
     public function __construct()
     {
         $connectionParams = [
-            'dbname' => 'framework',
-            'user' => 'root',
-            'password' => '',
-            'host' => 'localhost',
-            'driver' => 'pdo_mysql',
+            'dbname' => $_ENV['DB_NAME'],
+            'user' => $_ENV['DB_USERNAME'],
+            'password' => $_ENV['DB_PASSWORD'],
+            'host' => $_ENV['DB_HOST'],
+            'driver' => $_ENV['DB_DRIVER'],
         ];
         $this->connection = DriverManager::getConnection($connectionParams);
     }
