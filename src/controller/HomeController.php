@@ -2,14 +2,17 @@
 
 namespace App\controller;
 
+use Doctrine\DBAL\Connection;
 use RLC\Framework\Http\Request;
 use RLC\Framework\Http\Response;
 
 class HomeController
 {
 
-    public function __construct(PostsController $controller)
+    public Connection $connection;
+    public function __construct(Connection $connection)
     {
+        $this->connection = $connection;
     }
 
     public function index(){

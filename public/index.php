@@ -1,13 +1,7 @@
 <?php
 
 define("ROOT", dirname(__DIR__));
-require_once dirname(__DIR__) . "/vendor/autoload.php";
-
-
-$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
-$dotenv->load();
-
-
+require_once ROOT . "/vendor/autoload.php";
 
 $container = require ROOT."/config/services.php";
 
