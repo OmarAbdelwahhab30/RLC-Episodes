@@ -29,11 +29,11 @@ class Kernel
     {
 
 
-        $this->bootsrapApplication();
+        $this->bootstrapApplication();
         return $this->router->dispatch($request,$this->container);
     }
 
-    private function bootsrapApplication()
+    private function bootstrapApplication()
     {
 
         foreach ($this->bootstrappers as $bootstrapper){
