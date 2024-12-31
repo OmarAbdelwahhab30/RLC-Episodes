@@ -3,9 +3,19 @@
 namespace RLC\Framework\Http;
 
 use League\Container\Container;
+use RLC\Framework\Bootstrap\BootProviders;
+use RLC\Framework\Bootstrap\LoadEnvironmentVariables;
+use RLC\Framework\Bootstrap\RegisterProviders;
 use RLC\Framework\Router\RouterInterface;
 class Kernel
 {
+
+    protected array $bootstrappers =
+        [
+            LoadEnvironmentVariables::class,
+            RegisterProviders::class,
+            BootProviders::class
+        ];
     private RouterInterface $router;
 
     private Container $container;
@@ -17,6 +27,17 @@ class Kernel
 
     public function handle(Request $request)
     {
+
+
+        $this->bootsrapApplication();
         return $this->router->dispatch($request,$this->container);
+    }
+
+    private function bootsrapApplication()
+    {
+
+        foreach ($this->bootstrappers as $bootstrapper){
+            (new $bootstrapper)->bootstrap($this->container);
+        }
     }
 }
