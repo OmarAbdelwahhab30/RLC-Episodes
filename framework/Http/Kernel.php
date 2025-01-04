@@ -6,10 +6,15 @@ use League\Container\Container;
 use RLC\Framework\Bootstrap\BootProviders;
 use RLC\Framework\Bootstrap\LoadEnvironmentVariables;
 use RLC\Framework\Bootstrap\RegisterProviders;
+use RLC\Framework\Middleware\PreventRequestDuringMaintenance;
 use RLC\Framework\Router\RouterInterface;
 class Kernel
 {
 
+
+    public array $GlobalMiddleware = [
+        PreventRequestDuringMaintenance::class
+    ];
     protected array $bootstrappers =
         [
             LoadEnvironmentVariables::class,
@@ -28,8 +33,10 @@ class Kernel
     public function handle(Request $request)
     {
 
-
         $this->bootstrapApplication();
+
+        $this->applyMiddleware($request);
+
         return $this->router->dispatch($request,$this->container);
     }
 
@@ -38,6 +45,16 @@ class Kernel
 
         foreach ($this->bootstrappers as $bootstrapper){
             (new $bootstrapper)->bootstrap($this->container);
+        }
+    }
+
+    private function applyMiddleware($request){
+
+        foreach ($this->GlobalMiddleware as $middleware){
+
+            $middlewareObj = $this->container->get($middleware);
+
+            $middlewareObj->handle($request);
         }
     }
 }
