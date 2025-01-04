@@ -37,13 +37,20 @@ class Router implements RouterInterface
             $request->server['REQUEST_URI']
         );
 
+
         if ($request->server['REQUEST_METHOD'] == 'POST'){
             array_unshift($matchingInfo[2],$request);
         }
 
 
+
         switch ($matchingInfo[0]) {
             case Dispatcher::FOUND:
+                $middlewares = $matchingInfo[1][2] ?? [];
+
+                if ($middlewares != []){
+                    $this->applyMiddleware($middlewares,$container,$request);
+                }
                 return $this->returnRoutes($matchingInfo[1], $matchingInfo[2], $container);
 
             case Dispatcher::METHOD_NOT_ALLOWED:
@@ -59,5 +66,16 @@ class Router implements RouterInterface
     {
         $controllerObj = $container->get($handler[0]);
         return call_user_func_array([$controllerObj, $handler[1]], $arguments);
+    }
+
+    private function applyMiddleware(array $middlewares,$container,$request)
+    {
+
+        foreach ($middlewares as $middleware){
+
+            $middlewareObj = $container->get($middleware);
+
+            $middlewareObj->handle($request);
+        }
     }
 }
